@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+{% load embed_video_tags %}
+{% block title %}
+  Песня: {{music.name}} 
+{% endblock %}
+{% block content %}
+  <div class="container py-5"> 
+    <div class="row">
+      <aside class="col-12 col-md-4">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Дата публикации: {{ music.pub_date|date:"d E Y" }}
+          </li>
+          <li class="list-group-item">
+            Автор: <a href="{% url 'music:author' music.author.id %}">{{ music.author }}</a>
+          </li>
+          <li class="list-group-item">
+            Жанр: <a href="{% url 'music:genre' music.genre.id %}">{{ music.genre }}</a>
+          </li>
+          <li class="list-group-item">
+            Добавил: <a href="{% url 'music:author_user' music.author_user.id %}">{{ music.author_user.get_full_name }}</a>
+          </li>
+          {% if music.video%}
+            <li class="list-group-item">
+                {% video music.video '340x255' %}
+            </li>
+          {%endif%}
+          {% if request.user.id == music.author_user.id %}
+            <li class="list-group-item">
+              <a class = 'btn btn-primary' href={% url 'music:edit_music' music.id %}> Редактировать песню </a>
+            </li>
+          {% endif %}
+        </ul>
+      </aside>
+      <article class="col-12 col-md-4">
+        <h2>{{music.name}}</h2>
+        {% for line in music.text|split %}
+            <p>{{ line }}</p>
+        {% endfor %}
+      </article>
+      {% if music.translation %}
+      <article class="col-12 col-md-4">
+          <h2>Перевод</h2>
+          {% for line in music.translation|split %}
+              <p>{{ line }}</p>
+          {% endfor %}
+        </article>
+      {% endif %}
+    </div>
+  </div>
+  {% include 'music/includes/comments.html' %} 
+{% endblock %}

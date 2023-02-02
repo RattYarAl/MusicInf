@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+{% block title %}
+  {% with request.resolver_match.view_name as view_name %}
+    {% if view_name  == 'music:author' %}
+      Автор: {{ author }} 
+    {% else %}
+      Пользователь: {{ author }} 
+    {% endif %}
+  {% endwith %}
+{% endblock %}
+{% block content %}
+  <div class="container py-5">
+    {% with request.resolver_match.view_name as view_name %}
+      {% if view_name  == 'music:author' %}
+        <h1> Песни автора {{ author }} </h1>
+      {% else %}
+        <h1> Песни пользователя {{ author }} </h1>
+      {% endif %}
+    {% endwith %}
+    <hr>
+      {% for music in page_obj %}
+        {% include 'music/includes/music_list.html' %}
+        {% if not forloop.last %}
+          <hr>
+        {% endif %}
+      {% endfor %}
+      {% include 'includes/paginator.html' %}
+  </div>
+{% endblock %}

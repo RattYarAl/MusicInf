@@ -1,0 +1,32 @@
+{% load my_tags %}
+{% with request.resolver_match.view_name as view_name %}  
+    <article>
+        <h2> {{ music.name }} </h2>
+        <ul>
+            <li>
+                Дата публикации: {{ music.pub_date|date:"d E Y" }}
+            </li>
+            {% if view_name  != 'music:author' %}
+                <li>
+                    Автор: <a href="{% url 'music:author' music.author.id %}">{{ music.author }}</a>
+                </li>
+            {% endif %}
+            {% if view_name  != 'music:genre' %}
+                <li>
+                    Жанр: <a href="{% url 'music:genre' music.genre.id %}">{{ music.genre}}</a>
+                </li>
+            {% endif %}
+            {% if view_name  != 'music:author_user' %}
+                <li>
+                    Добавил: <a href="{% url 'music:author_user' music.author_user %}">{{ music.author_user.get_full_name }} </a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul>
+        {% for line in music.text|truncatechars:50|split%}
+            <p>{{ line }}</p>
+        {% endfor %}
+        <a href="{% url 'music:music_detail' music.pk %}">Полный текст </a>
+        </ul>
+    </article>
+{% endwith %}

@@ -1,0 +1,42 @@
+{% load my_tags %}
+{% if user.is_authenticated %}
+    <div class="card my-4">
+        <h5 class="card-header">Добавить комментарий:</h5>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" action="{% url 'music:add_comment' music.id %}">
+                {% csrf_token %}      
+                {% for field in form %}
+                    {{ field.label }}
+                    <div class="form-group mb-2">
+                        {{ field|addclass:"form-control"}}
+                        {{ field.help_text }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Отправить</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+<div class="card my-4">
+    <h5 class="card-header">Комментарии:</h5>
+</div>
+{% if not comments %}
+    <h6 class="card-header">Пока никто не оставил комментариев</h5>
+{% else %}
+    {% for comment in comments %}
+        <div class="media mb-4">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    <a href="{% url 'music:author_user' comment.author_user.username %}">
+                        {{ comment.author_user.username }}
+                    </a>
+                </h5>
+                {{ comment.created|date:"d E Y G:i:s"  }}
+                <p>
+                    {{ comment.text }}
+                </p>
+            </div>
+        </div>
+        {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+{% endif %}

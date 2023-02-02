@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+{% block title %}
+  {{ title }}
+{% endblock %}
+{% block content %}
+  <div class="container py-5">
+    <article>
+        {% for genre in genres %}
+        <li><a href="{% url 'music:genre' genre.id %}">{{ genre }}</li><a>
+        {% endfor %}
+    </article> 
+  </div>
+{% endblock %}
