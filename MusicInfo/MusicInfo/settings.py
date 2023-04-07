@@ -25,7 +25,9 @@ SECRET_KEY = '8%qd8*0-ie8=3cb68s(&ttc6!@2go)t(79k&t188!k1-#6r80j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'testserver', ]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'testserver',
+                 'www.DenV.pythonanywhere.com',
+                 'DenV.pythonanywhere.com', ]
 
 
 # Application definition
